@@ -7,21 +7,43 @@
 </head>
 <body>
     <div ng-controller="MyController as my">
-        <h1>List of Candidates</h1>
-        <ul>
-            <li ng-repeat="c in my.candidates">{{c.name}}</li>
-        </ul>
+        <section class="view panel">
+            <h1>List of Candidates</h1>
+            <ul>
+                <li ng-repeat="c in my.candidates">{{c.name}}</li>
+            </ul>
+        </section>
+        <section class="create panel">
+            <h1>Create Candidate</h1>
+            <input type="text" placeholder="Enter name ... " ng-model="my.candidate.name"/>
+            <input type="email" placeholder="Enter email ... " ng-model="my.candidate.email"/>
+            <input type="text" placeholder="Enter college ... " ng-model="my.candidate.college"/>
+            <input type="text" placeholder="Enter grad ... " ng-model="my.candidate.grad"/>
+            <button ng-click="my.create()">Add Candidate</button>
+        </section>
     </div>
     <script src="/angular/angular.js"></script>
+    <script src="/angular-resource/angular-resource.js"></script>
     <script>
-        angular.module('myApp', []).controller('MyController', function ($scope, $http) {
-            $scope.message = 'Hello World!';
-            var my = this;
-            my.candidates = [];
-            $http.get('http://localhost:3000/candidates').success(function (data) {
-                my.candidates = data;
-            });
-        });
+        angular.module('myApp', ['ngResource'])
+                .controller('MyController', function ($scope, Candidate) {
+                    var my = this;
+                    my.candidate = new Candidate();
+
+                    my.create = function() {
+                        Candidate.save(my.candidate, function () {
+                            my.candidates.push(my.candidate);
+                            my.candidate = new Candidate();
+                        });
+                    };
+
+                    my.candidates = Candidate.query(function (candidates) {
+                        console.log(my.candidates);
+                    });
+                })
+                .factory('Candidate', function($resource) {
+                    return $resource('/candidates/:id');
+                });
     </script>
 </body>
 </html>
