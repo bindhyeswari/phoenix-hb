@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/base.css"/>
+</head>
+<body>
+    <div ng-controller="MyController as my">
+        <h1>List of Candidates</h1>
+        <ul>
+            <li ng-repeat="c in my.candidates">{{c.name}}</li>
+        </ul>
+    </div>
+    <script src="/angular/angular.js"></script>
+    <script>
+        angular.module('myApp', []).controller('MyController', function ($scope, $http) {
+            $scope.message = 'Hello World!';
+            var my = this;
+            my.candidates = [];
+            $http.get('http://localhost:3000/candidates').success(function (data) {
+                my.candidates = data;
+            });
+        });
+    </script>
+</body>
+</html>
