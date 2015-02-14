@@ -1,25 +1,11 @@
-<!DOCTYPE html>
-<html ng-app="myApp">
-<head lang="en">
+<!doctype html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Document</title>
     <link rel="stylesheet" href="/css/base.css"/>
 </head>
 <body>
-    <input type="text" ng-model="message"/>
-    <div ng-controller="MyController as my">
-      <input type="text" ng-model="my.message"/>
-      <div ng-controller="MyController2">
-        <input type="text" ng-model="my.message"/>
-        <div>Message from Controller2: {{message}}</div>
-      </div>
-    </div>
-    <script src="/angular/angular.js"></script>
-    <script src="/controllers/index_controllers.js"></script>
-    <script>
-        angular.module('myApp', ['myapp.controllers']).run(function ($rootScope) {
-          $rootScope.message = 'Hello from root';
-        });
-    </script>
+    Hello from Heroku!
 </body>
 </html>

@@ -24,10 +24,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
 
-mongoose.connect('mongodb://localhost/test', function (err) {
+/*mongoose.connect('mongodb://localhost/test', function (err) {
     if (err) console.log('ERR: Mongoose connect failed!');
     else console.log('Connected to MongoDB now .... ');
-});
+});*/
 app.use('/', routes);
 app.use('/users', users);
 app.use('/candidates', require('./routes/candidates_route'));
