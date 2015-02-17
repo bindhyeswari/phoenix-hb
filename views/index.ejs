@@ -4,8 +4,52 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="/css/base.css"/>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('Hello World!');
+
+            var btn = document.querySelector('button').addEventListener('click', function () {
+                var files = Array.prototype.slice.call(document.querySelector('input[type="file"]').files);
+                console.log(files);
+
+                // test above steps before coding the part below
+                var formdata = new FormData();
+                formdata.append('name', 'Christina');
+                formdata.append('file1', files[0]);
+
+                // make an ajax call
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:8000/files');
+                xhr.setRequestHeader('accept', 'application/json');
+                xhr.addEventListener('readystatechange', function () {
+                    if( xhr.readyState === 4 && xhr.status === 201 ) {
+                        var obj = JSON.parse(xhr.responseText);
+                        console.log(obj);
+
+                        var jsonCandidateData = {
+                            candidateid: 'asdff-7afy879asdf',
+                            filename: obj.message
+                        };
+                        var xhr2 = new XMLHttpRequest();
+                        xhr2.open('PUT', '/candidates');
+                        xhr2.setRequestHeader('accept', 'application/json');
+                        xhr2.addEventListener('readystatechange', function () {
+                            if( xhr2.readyState === 4 && xhr2.status === 200 ) {
+                                var obj = JSON.parse(xhr2.responseText);
+                                console.log(obj);
+                            }
+                        });
+
+                        xhr2.send(JSON.stringify(jsonCandidateData));
+                    }
+                });
+                xhr.send(formdata);
+            });
+        });
+    </script>
 </head>
 <body>
-    Hello from Heroku!
+<input type="file"/>
+<button>Upload</button>
 </body>
 </html>
